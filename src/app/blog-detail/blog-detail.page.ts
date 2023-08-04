@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiResp, BlogPost, DataTableResp, comment } from '../model';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { BlogService } from '../blog.service';
 import {
   FormBuilder,
@@ -10,6 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthGuard } from '../auth-guard.guard';
+import { AuthService } from '../login/auth.service';
 
 @Component({
   selector: 'app-blog-detail',
@@ -31,7 +32,8 @@ export class BlogDetailPage implements OnInit {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private blogService: BlogService,
-    private authGuard: AuthGuard
+    private authService: AuthService,
+    private toastController: ToastController
   ) {}
   ngOnInit() {
     this.initFormGroup();
@@ -72,8 +74,11 @@ export class BlogDetailPage implements OnInit {
   }
 
   onSubmit() {
-    if (!this.authGuard.isSignedIn()) {
-      //display alert
+    if (!this.authService.isAuthenticated()) {
+      this.presentToast('You need to sign in to comment');
+      setTimeout(() => {
+        this.navCtrl.navigateBack('/auth');
+      }, 1000);
       return;
     }
 
@@ -129,5 +134,15 @@ export class BlogDetailPage implements OnInit {
   openComments(event: Event) {
     event.stopPropagation();
     this.navCtrl.navigateForward(`blog-detail/${this.blogData?.id}#comments`);
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500,
+      position: 'bottom',
+    });
+
+    await toast.present();
   }
 }

@@ -1,20 +1,71 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Home
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Home</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<ion-grid>
+  <ion-row>
+    <ion-col class="ion-no-padding ion-no-margin" size="12" size-sm="8" offset-sm="2">
+    <app-blog  *ngFor="let blog of blogPosts" [blogData]="blog" ></app-blog>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles" ></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-col>
+</ion-row>
+</ion-grid>
+
+  <ion-fab slot="fixed" class="p" vertical="bottom" horizontal="end" >
+    <ion-fab-button color="secondary" (click)="setOpen(!isModalOpen)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Post</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="postFormGroup">
+        <ion-list>
+          <ion-item>
+            <ion-label position="floating">Title</ion-label>
+            <ion-input formControlName="title" type="text"  required></ion-input>
+          </ion-item>
+      
+          <!-- Input field for capturing images -->
+          <ion-item>
+            <ion-label position="floating" >Image</ion-label>
+            <ion-input type="file" (change)="onFileChange($event)" accept="image/*"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Content</ion-label>
+            <ion-textarea formControlName="content" rows="6"  required></ion-textarea>
+          </ion-item>
+
+        </ion-list>
+      </form>
+        <ion-button expand="full" [disabled]="postFormGroup.invalid" (click)="submitBlog()">Post</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

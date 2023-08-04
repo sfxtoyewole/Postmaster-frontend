@@ -1,0 +1,78 @@
+<ion-header>
+<ion-buttons >
+  <ion-back-button defaultHref="/home"></ion-back-button>
+</ion-buttons>
+  <ion-toolbar>
+    <ion-title>{{blogData?.title}}</ion-title>
+    <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-margin-top ion-padding-top" [fullscreen]="true">
+  
+  <ion-grid>
+      <ion-row>
+        <ion-col  size="12" size-sm="8" offset-sm="2"> 
+          <div>
+            {{blogData?.content}}
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+          <ion-col size="3" (click)="likeBlog($event)">
+            <ion-icon name="heart" [style.color]="blogData?.likes ? 'red' : 'black'"></ion-icon>
+            {{ blogData?.likes||0 }} Likes
+          </ion-col>
+      
+          <ion-col size="6" (click)="openComments($event)">
+            <ion-icon name="chatbubble" style="margin-right: 5px;"></ion-icon>
+            {{ blogData?.comments}} Comments
+          </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12" >
+          <h4>Comments</h4>
+          <hr>
+          <app-comment class="ion-margin-top" *ngFor="let comment of comments"  [comment]="comment"></app-comment>
+          <div class="ion-text-center" *ngIf="!comments.length" > <p>no comment</p></div>
+        </ion-col>
+      </ion-row>
+
+      
+      <ion-row>
+        <ion-col size="12" >
+          <form [formGroup]="commentForm">
+         
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+               <ion-item>
+                <ion-textarea formControlName="content" label="comment" rows="2" required></ion-textarea>
+            </ion-item>
+            </ion-col>
+            </ion-row>
+         
+            <ion-row  *ngIf="!commentForm?.get('content')?.valid && commentForm?.get('content')?.touched"  >
+              <ion-col size-sm="6" offset-sm="3">
+                <ion-text color="danger">
+                {{ "comment is blank !!"  | translate}}
+              </ion-text>
+              </ion-col>
+            </ion-row>
+            
+       <ion-row>
+            <ion-col class="ion-align-self-end">
+            <ion-button class="ion-margin-top " [disabled]="!commentForm.valid" size="small" color="primary" (click)="onSubmit()">Submit</ion-button>   
+            </ion-col>   
+       </ion-row>
+  </ion-grid>
+    </form>
+        </ion-col>
+      </ion-row>
+
+  </ion-grid>
+
+
+</ion-content>

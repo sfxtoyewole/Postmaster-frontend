@@ -1,0 +1,52 @@
+
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{isSignInMode? "Sign In":  "Sign Up"}}</ion-title>
+  </ion-toolbar>
+  <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+</ion-header>
+
+
+<ion-content >
+
+  
+  <ion-card class="ion-no-padding">
+    <ion-card-content class="ion-no-margin ion-no-padding">
+  <ion-grid [fixed]="true" >
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="ion-margin-top ion-margin-bottom ion-text-center" >
+        <h1 class="text-center">Welcome to  PostMaster</h1>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center"  >
+      <ion-col class="ion-no-padding ion-no-margin" size="12" size-sm="8" offset-sm="2">
+
+  <ion-list position="center"  class="ion-no-padding ion-no-margin">
+    <ion-item *ngIf="!isSignInMode">
+      <ion-label position="floating">Name</ion-label>
+      <ion-input type="text" [(ngModel)]="signUpData.name" [required]="!isSignInMode"></ion-input>
+    </ion-item>
+    <ion-item >
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" [(ngModel)]="signUpData.email" required></ion-input>
+    </ion-item>
+    <ion-item >
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" [(ngModel)]="signUpData.password" required></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button class="ion-margin-top ion-margin-bottom ion-padding" expand="full" shape="round" (click)="authenticate()">{{isSignInMode? "Sign In":  "Sign Up"}}</ion-button>
+
+  <div class="ion-text-center ion-margin-bottom">
+    <a (click)="changeMode()"> {{isSignInMode? "Don't have an account? Sign Up": "Already have an account? Sign In "}}</a>
+  </div>
+
+  </ion-col>
+  </ion-row>
+  </ion-grid> 
+</ion-card-content>
+</ion-card>
+</ion-content>

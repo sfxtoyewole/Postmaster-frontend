@@ -1,0 +1,18 @@
+ion-content {
+    background-color: red;
+}
+
+.comment{
+    display: flex;
+    flex-direction: column;
+
+    &-info{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      font-size: 9px;
+    }
+    &-p{
+         font-size: 14px;   
+    }
+}

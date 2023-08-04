@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import {
+  InfiniteScrollCustomEvent,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { BlogService } from '../blog.service';
 import { ApiResp, BlogPost, DataTableResp } from '../model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -28,7 +32,9 @@ export class HomePage implements OnInit {
 
   constructor(
     private blogService: BlogService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastController: ToastController,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit(): void {
@@ -86,12 +92,16 @@ export class HomePage implements OnInit {
 
   submitBlog() {
     if (!this.authService.isAuthenticated()) {
-      //TODO alert
+      this.isModalOpen = false;
+      this.presentToast('You need to sign in to post');
+      setTimeout(() => {
+        this.navCtrl.navigateBack('/auth');
+      }, 1000);
     }
 
     this.blogService.postBlog(this.postFormGroup.getRawValue()).subscribe(
       () => {
-        //TOdo toast to success
+        this.presentToast('Success');
         this.page = 0;
         this.loadPosts();
         this.isModalOpen = false;
@@ -101,5 +111,15 @@ export class HomePage implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500,
+      position: 'bottom',
+    });
+
+    await toast.present();
   }
 }

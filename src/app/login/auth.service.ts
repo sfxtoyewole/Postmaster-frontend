@@ -8,9 +8,8 @@ import { SignInReq, SignUpReq } from '../model';
   providedIn: 'root',
 })
 export class AuthService {
-  isAuthenticated() {
-    //TODO fix this
-    return true;
+  isAuthenticated(): boolean {
+    return localStorage.getItem('Authorization') != null;
   }
   constructor(private restService: RestService) {}
 

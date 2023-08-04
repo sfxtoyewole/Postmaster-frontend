@@ -94,6 +94,8 @@ export class HomePage implements OnInit {
         //TOdo toast to success
         this.page = 0;
         this.loadPosts();
+        this.isModalOpen = false;
+        this.postFormGroup.reset();
       },
       (err) => {
         console.log(err);

@@ -12,6 +12,7 @@ import { NavController } from '@ionic/angular';
 export class LoginPage implements OnInit {
   isSignInMode = true;
   isLoading = false;
+  isToastOpen = false;
 
   signUpData = {
     name: '',
@@ -46,7 +47,10 @@ export class LoginPage implements OnInit {
       .subscribe(
         (resp) => {
           this.isLoading = false;
-          this.handleSuccessfulAuthentication(resp);
+          this.isToastOpen = true;
+          setTimeout(() => {
+            this.handleSuccessfulAuthentication(resp);
+          }, 1000);
         },
         (error) => {
           //TODO notify the user
@@ -66,7 +70,10 @@ export class LoginPage implements OnInit {
       .subscribe(
         (resp) => {
           this.isLoading = false;
-          this.handleSuccessfulAuthentication(resp);
+          this.isToastOpen = true;
+          setTimeout(() => {
+            this.handleSuccessfulAuthentication(resp);
+          }, 1000);
         },
         (error) => {
           //TODO notify the user
@@ -78,7 +85,7 @@ export class LoginPage implements OnInit {
 
   private handleSuccessfulAuthentication(resp: Object) {
     const response = resp as ApiResp<{ username: string; token: string }>;
-    //Todo add an alert
+
     localStorage.setItem('Authorization', response.data.token);
     this.navCtrl.navigateForward('/home');
   }
@@ -90,5 +97,8 @@ export class LoginPage implements OnInit {
   changeMode() {
     console.log(this.isSignInMode);
     this.isSignInMode = !this.isSignInMode;
+  }
+  setOpen(status: boolean) {
+    this.isToastOpen = status;
   }
 }

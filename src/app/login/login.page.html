@@ -49,4 +49,11 @@
   </ion-grid> 
 </ion-card-content>
 </ion-card>
+<ion-toast
+    [isOpen]="isToastOpen"
+    message="Your request is success"
+    [duration]="5000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
+
 </ion-content>

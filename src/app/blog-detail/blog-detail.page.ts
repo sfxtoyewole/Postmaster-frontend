@@ -88,6 +88,8 @@ export class BlogDetailPage implements OnInit {
           (resp) => {
             this.isLoading = false;
             // toast that comment sent
+
+            this.retrieveComments(this.blogData?.id as unknown as string);
           },
           (error) => {
             this.isLoading = false;
